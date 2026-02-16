@@ -39,6 +39,9 @@ dependencies:
   flutter_map: ^6.1.0
   latlong2: ^0.9.0
   
+  # Supabase Backend
+  supabase_flutter: ^2.3.4
+  
   # Location Services
   geolocator: ^10.1.0
   geocoding: ^2.1.1

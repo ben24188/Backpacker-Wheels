@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/vehicle.dart';
 import '../widgets/vehicle_card.dart';
+import 'vehicle_detail_screen.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -200,15 +201,11 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 
   void _showVehicleDetails(Vehicle vehicle) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Details für ${vehicle.fullTitle}'),
-        action: SnackBarAction(
-          label: 'OK',
-          onPressed: () {},
-        ),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VehicleDetailScreen(vehicle: vehicle),
       ),
     );
-    // TODO: Navigation zur Detail-Seite
   }
 }

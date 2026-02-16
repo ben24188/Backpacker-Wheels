@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import '../models/vehicle.dart';
+import 'vehicle_detail_screen.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -149,85 +151,42 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _showCarDetails(CarMarker carMarker) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Icon(Icons.directions_car, size: 40, color: Colors.orange),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        carMarker.title,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        'Verkäufer: ${carMarker.seller}',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            const Divider(),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Preis',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 12,
-                      ),
-                    ),
-                    Text(
-                      carMarker.price,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange,
-                      ),
-                    ),
-                  ],
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Details für ${carMarker.title}')),
-                    );
-                  },
-                  icon: const Icon(Icons.arrow_forward),
-                  label: const Text('Details'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-          ],
-        ),
+    // Erstelle ein temporäres Vehicle für Demo
+    final vehicle = Vehicle(
+      id: carMarker.title,
+      userId: 'demo',
+      title: carMarker.title,
+      description: 'Perfect campervan for your Australian adventure!',
+      make: carMarker.title.split(' ')[0],
+      model: carMarker.title.split(' ').skip(1).join(' '),
+      year: int.parse(carMarker.title.split(' ').last),
+      price: double.parse(carMarker.price.replaceAll(RegExp(r'[^\d.]'), '')),
+      location: carMarker.position,
+      city: _getCityFromPosition(carMarker.position),
+      images: [],
+      createdAt: DateTime.now(),
+      sellerName: carMarker.seller,
+      mileage: 150000,
+      transmission: 'manual',
+      fuelType: 'diesel',
+    );
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VehicleDetailScreen(vehicle: vehicle),
       ),
     );
+  }
+
+  String _getCityFromPosition(LatLng position) {
+    if (position.latitude > -34 && position.latitude < -33) return 'Sydney';
+    if (position.latitude > -38 && position.latitude < -37) return 'Melbourne';
+    if (position.latitude > -28 && position.latitude < -27) return 'Brisbane';
+    if (position.latitude > -32 && position.latitude < -31) return 'Perth';
+    if (position.latitude > -35 && position.latitude < -34) return 'Adelaide';
+    if (position.latitude > -13 && position.latitude < -12) return 'Darwin';
+    return 'Australia';
   }
 }
 

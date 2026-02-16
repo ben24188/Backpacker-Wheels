@@ -1,0 +1,7 @@
+# Supabase Config Template
+# Kopiere diese Datei zu `supabase_config.dart` und füge deine echten Werte ein
+
+class SupabaseConfig {
+  static const String supabaseUrl = 'YOUR_SUPABASE_URL_HERE';
+  static const String supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY_HERE';
+}

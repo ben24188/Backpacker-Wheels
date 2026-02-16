@@ -33,6 +33,9 @@ migrate_working_dir/
 .pub/
 /build/
 
+# Config files with secrets (DO NOT COMMIT!)
+lib/config/supabase_config.dart
+
 # Symbolication related
 app.*.symbols
 
